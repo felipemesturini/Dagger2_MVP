@@ -1,15 +1,19 @@
 package com.example.dagger2lab001.ui.cars.detail
 
+import android.util.Log
 import com.example.dagger2lab001.model.Car
 import com.example.dagger2lab001.presenter.BasePresenter
+import com.example.dagger2lab001.repository.RepositoryIntf
+import javax.inject.Inject
+import javax.inject.Scope
 
-class CarDetailPresenterImpl: BasePresenter<Car, CarDetailCustomView>(), CarDetailPresenterIntf {
+class CarDetailPresenterImpl @Inject constructor(
+    private val repository: RepositoryIntf
+): BasePresenter<Car, CarDetailCustomView>(), CarDetailPresenterIntf {
     override fun handlerShowCar(id: Long) {
-        val newList = listOf(
-            Car("Corsa Super", "Corsa 1999 1.0 Super 4 bicos"),
-            Car("Vectra Elegance", "Verctra 2002 2.0 Super"),
-        )
-        val item = newList.first()
-        view?.showCar(item)
+        Log.i("CarDetailPresenterImpl", "Find car details here")
+       repository.find(id)?.let {
+           view?.showCar(it)
+       }
     }
 }

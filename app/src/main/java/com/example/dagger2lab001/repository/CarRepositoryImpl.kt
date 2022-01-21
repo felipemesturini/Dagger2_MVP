@@ -12,6 +12,7 @@ class CarRepositoryImpl: RepositoryIntf {
         (1..10000).map { it.toLong() }.forEach {
             insert(
                 Car(
+                    it,
                     "Car number ${it}",
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                             "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
@@ -40,7 +41,7 @@ class CarRepositoryImpl: RepositoryIntf {
     }
 
     override fun insert(car: Car) {
-        mCarsMap.put(car.title.hashCode().toLong(), car)
+        mCarsMap.put(car.id, car)
     }
 
 }

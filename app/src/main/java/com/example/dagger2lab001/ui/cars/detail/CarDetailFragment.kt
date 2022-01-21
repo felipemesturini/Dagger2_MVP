@@ -8,23 +8,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.dagger2lab001.CarApplication
 import com.example.dagger2lab001.R
 import com.example.dagger2lab001.model.Car
+import javax.inject.Inject
 
-
-private const val ARG_PARAM1 = "car_id"
 
 class CarDetailFragment : Fragment(), CarDetailCustomView {
     // TODO: Rename and change types of parameters
     private var param1: Long? = null
     private lateinit var mTitleTextView: TextView
     private lateinit var mDetailTextView: TextView
-    private lateinit var mCarDetailPresenter: CarDetailPresenterIntf
+
+    @Inject
+    lateinit var mCarDetailPresenter: CarDetailPresenterIntf
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getLong(ARG_PARAM1)
+            param1 = it.getLong(PARAM_CAR_ID)
         }
     }
 
@@ -43,7 +45,7 @@ class CarDetailFragment : Fragment(), CarDetailCustomView {
     }
 
     override fun onAttach(context: Context) {
-        mCarDetailPresenter = CarDetailPresenterImpl()
+        (context.applicationContext as CarApplication).appGraph.inject(this)
         mCarDetailPresenter.bind(this)
         super.onAttach(context)
     }
@@ -61,21 +63,19 @@ class CarDetailFragment : Fragment(), CarDetailCustomView {
     }
 
     companion object {
+        const val PARAM_CAR_ID = "car_id"
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
+         * @param buble Parametre to passed
          * @return A new instance of fragment CarDetailFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(carId: Long) =
+        fun newInstance(bundle: Bundle) =
             CarDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putLong(ARG_PARAM1, carId)
-                }
+                arguments = bundle
             }
     }
 

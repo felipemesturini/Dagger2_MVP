@@ -71,8 +71,11 @@ class CarListFragment : Fragment(), CarListCustomView {
         mRecyclerView.addItemDecoration(itemDecoration)
         mCarListAdapter = CarListAdapter(mListOfCars) {
             Log.i("CarListFragment", it.toString())
+            val bundle = Bundle().apply {
+                putLong(CarDetailFragment.PARAM_CAR_ID, it?.id ?: -1)
+            }
             parentFragmentManager.beginTransaction()
-                .replace(R.id.containerLayout, CarDetailFragment.newInstance(1))
+                .replace(R.id.containerLayout, CarDetailFragment.newInstance(bundle))
                 .addToBackStack("carDetail")
                 .commit()
 
